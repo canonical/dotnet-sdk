@@ -1,0 +1,27 @@
+name: dotnet
+build-base: ubuntu@22.04
+summary: .NET SDK
+adopt-info: dotnet
+description: |
+  This SDK provides the .NET toolchain for building, testing, and running
+  .NET projects. NuGet packages and .NET runtime data are persisted on
+  the host to speed up builds across workshop updates.
+license: Apache-2.0
+platforms:
+  amd64:
+  arm64:
+
+plugs:
+  nuget-cache:
+    interface: mount
+    workshop-target: /home/workshop/.nuget
+  dotnet-cache:
+    interface: mount
+    workshop-target: /home/workshop/.dotnet
+
+parts:
+  dotnet:
+    plugin: nil
+    override-pull: |
+      VERSION=$(cat "$CRAFT_PROJECT_DIR/VERSION")
+      craftctl set version="$VERSION"

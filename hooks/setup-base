@@ -1,0 +1,39 @@
+#!/usr/bin/bash
+
+# NOTE: we use apt-get instead of apt for non-interactive package installation.
+# apt will prompt services restart for some of the packages below which will
+# make the SDK installation stall forever.
+
+VERSION=$(cat "$SDK_PROJECT_DIR/VERSION")
+# Derive the snap package name from the version: 8.0 -> dotnet-sdk-80
+SNAP_NAME="dotnet-sdk-$(echo "$VERSION" | tr -d '.')"
+
+ubuntu_version=$(lsb_release -rs)
+
+apt-get -y update
+# Install libicu package needed for .NET globalization features.
+case "$ubuntu_version" in
+    "24.04")
+        icupkg=libicu74
+        ;;
+    "22.04")
+        icupkg=libicu70
+        ;;
+    *)
+        echo "Unsupported Ubuntu version: $ubuntu_version"
+        exit 1
+        ;;
+esac
+
+apt-get -y install "$icupkg"
+
+# Install the .NET SDK content snap
+snap install "$SNAP_NAME"
+
+# Create a symlink to the dotnet executable to make it available in the PATH
+ln -s "/snap/${SNAP_NAME}/current/usr/lib/dotnet/dotnet" /usr/bin/dotnet
+
+# If dnx is available (e.g. .NET 10+), symlink it too
+if [ -f "/snap/${SNAP_NAME}/current/usr/lib/dotnet/dnx" ]; then
+    ln -s "/snap/${SNAP_NAME}/current/usr/lib/dotnet/dnx" /usr/bin/dnx
+fi

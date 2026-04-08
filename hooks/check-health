@@ -1,0 +1,7 @@
+#!/usr/bin/bash
+
+if dotnet --info; then
+    workshopctl set-health okay
+else
+    workshopctl set-health --code=installation-failed error "dotnet --info failed"
+fi
