@@ -5,8 +5,8 @@
 # make the SDK installation stall forever.
 
 VERSION=$(cat "$SDK_PROJECT_DIR/VERSION")
-# Derive the snap package name from the version: 8.0 -> dotnet-sdk-80
-SNAP_NAME="dotnet-sdk-$(echo "$VERSION" | tr -d '.')"
+# Derive the snap package name from the major version: 8 -> dotnet-sdk-80, 10 -> dotnet-sdk-100
+SNAP_NAME="dotnet-sdk-${VERSION%%.*}0"
 
 ubuntu_version=$(lsb_release -rs)
 
