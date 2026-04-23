@@ -25,3 +25,13 @@ parts:
     override-pull: |
       VERSION=$(cat "$CRAFT_PROJECT_DIR/VERSION")
       craftctl set version="$VERSION"
+    override-build: |
+      craftctl default
+      VERSION=$(cat "$CRAFT_PROJECT_DIR/VERSION")
+      MAJOR=$(echo "$VERSION" | cut -d. -f1)
+      SNAP_NAME="dotnet-sdk-${MAJOR}0"
+
+      UBUNTU_STORE_ARCH=${CRAFT_ARCH_BUILD_FOR} snap download "$SNAP_NAME" --channel=stable
+      unsquashfs ${SNAP_NAME}*.snap
+
+      cp -r squashfs-root/usr "$CRAFT_PART_INSTALL/"
