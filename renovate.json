@@ -6,6 +6,22 @@
   "enabledManagers": [
     "custom.regex"
   ],
+  "customDatasources": {
+    "snap-store": {
+      "defaultRegistryUrlTemplate": "https://api.snapcraft.io/api/v1/snaps/details/{{packageName}}?channel=stable",
+      "transformTemplates": [
+        "{ \"releases\": [{ \"version\": version }] }"
+      ]
+    }
+  },
+  "hostRules": [
+    {
+      "matchHost": "api.snapcraft.io",
+      "headers": {
+        "X-Ubuntu-Series": "16"
+      }
+    }
+  ],
   "customManagers": [
     {
       "customType": "regex",
@@ -13,9 +29,8 @@
       "matchStrings": [
         "(?<currentValue>[0-9.]+)"
       ],
-      "depNameTemplate": "dotnet/sdk",
-      "datasourceTemplate": "github-releases",
-      "extractVersionTemplate": "^v(?<version>.*)$",
+      "depNameTemplate": "dotnet-sdk",
+      "datasourceTemplate": "custom.snap-store",
       "versioningTemplate": "semver"
     }
   ],
@@ -26,18 +41,21 @@
   ],
   "packageRules": [
     {
-      "matchPackageNames": ["dotnet/sdk"],
+      "matchPackageNames": ["dotnet-sdk"],
       "matchBaseBranches": ["8"],
+      "overridePackageName": "dotnet-sdk-80",
       "allowedVersions": "/^8\\./"
     },
     {
-      "matchPackageNames": ["dotnet/sdk"],
+      "matchPackageNames": ["dotnet-sdk"],
       "matchBaseBranches": ["9"],
+      "overridePackageName": "dotnet-sdk-90",
       "allowedVersions": "/^9\\./"
     },
     {
-      "matchPackageNames": ["dotnet/sdk"],
+      "matchPackageNames": ["dotnet-sdk"],
       "matchBaseBranches": ["10"],
+      "overridePackageName": "dotnet-sdk-100",
       "allowedVersions": "/^10\\./"
     }
   ]
