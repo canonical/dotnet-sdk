@@ -106,7 +106,7 @@ This SDK doesn't define any slots.
 
 - [.NET official documentation](https://learn.microsoft.com/en-us/dotnet/)
 - [NuGet documentation](https://learn.microsoft.com/en-us/nuget/)
-- [Workshop documentation](https://canonical-workshop.readthedocs-hosted.com/latest/)
+- [Workshop documentation](https://ubuntu.com/workshop/docs/)
 
 ---
 
@@ -115,7 +115,7 @@ This SDK doesn't define any slots.
 - .NET community:
   [.NET Community Forum](https://dotnetfoundation.org/community)
 - Workshop forum:
-  [Workshop Discourse](https://discourse.canonical.com/c/engineering/workshops/34)
+  [Discourse](https://discourse.ubuntu.com/)
 - Please review our
   [Code of Conduct](https://ubuntu.com/community/ethos/code-of-conduct) before
   participating.
