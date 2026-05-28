@@ -1,5 +1,5 @@
 name: dotnet
-build-base: ubuntu@22.04
+build-base: ubuntu@26.04
 summary: .NET SDK
 adopt-info: dotnet
 description: |
