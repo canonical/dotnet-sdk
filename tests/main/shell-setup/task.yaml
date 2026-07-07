@@ -1,0 +1,17 @@
+summary: Verify .NET SDK shell setup files are installed
+
+prepare: |
+  envsubst '${BASE}' <workshop.yaml.in >workshop.yaml
+  workshop launch
+
+restore: |
+  workshop remove || true
+
+execute: |
+  workshop exec -- test -s /etc/profile.d/dotnet.sh
+  workshop exec -- grep -F 'export PATH=' /etc/profile.d/dotnet.sh
+  workshop exec -- grep -F '/var/lib/workshop/sdk/dotnet/usr/bin' /etc/profile.d/dotnet.sh
+
+debug: |
+  workshop exec -- cat /etc/profile.d/dotnet.sh || true
+  workshop tasks
