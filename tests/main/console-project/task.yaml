@@ -1,0 +1,22 @@
+summary: Build and run a simple .NET console project
+
+prepare: |
+  envsubst '${BASE}' <workshop.yaml.in >workshop.yaml
+  workshop launch
+
+restore: |
+  workshop remove || true
+
+execute: |
+  workshop exec -- rm -rf DotnetSdkTest
+  workshop exec -- dotnet new console --name DotnetSdkTest --output DotnetSdkTest
+  workshop exec -- bash -lc 'cat > DotnetSdkTest/Program.cs <<EOF
+  Console.WriteLine("dotnet-sdk:ok");
+  EOF'
+  workshop exec -- dotnet build DotnetSdkTest
+  workshop exec -- dotnet run --project DotnetSdkTest | MATCH '^dotnet-sdk:ok$'
+
+debug: |
+  workshop exec -- dotnet --info || true
+  workshop exec -- bash -lc 'find DotnetSdkTest -maxdepth 3 -type f | sort' || true
+  workshop tasks

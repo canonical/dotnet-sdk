@@ -1,0 +1,22 @@
+summary: Verify .NET SDK cache mount targets are available
+
+prepare: |
+  envsubst '${BASE}' <workshop.yaml.in >workshop.yaml
+  workshop launch
+
+restore: |
+  workshop remove || true
+
+execute: |
+  workshop exec -- test -d /home/workshop/.nuget
+  workshop exec -- test -d /home/workshop/.dotnet
+  workshop exec -- bash -lc 'echo sdk-nuget-cache > /home/workshop/.nuget/sdk-test-marker'
+  workshop exec -- bash -lc 'echo sdk-dotnet-cache > /home/workshop/.dotnet/sdk-test-marker'
+  workshop exec -- grep -F sdk-nuget-cache /home/workshop/.nuget/sdk-test-marker
+  workshop exec -- grep -F sdk-dotnet-cache /home/workshop/.dotnet/sdk-test-marker
+
+debug: |
+  workshop exec -- ls -la /home/workshop/.nuget /home/workshop/.dotnet || true
+  workshop exec -- findmnt /home/workshop/.nuget || true
+  workshop exec -- findmnt /home/workshop/.dotnet || true
+  workshop tasks

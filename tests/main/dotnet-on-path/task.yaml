@@ -1,0 +1,19 @@
+summary: Verify the dotnet command is available and usable
+
+prepare: |
+  envsubst '${BASE}' <workshop.yaml.in >workshop.yaml
+  workshop launch
+
+restore: |
+  workshop remove || true
+
+execute: |
+  workshop exec -- bash -lc 'command -v dotnet' | MATCH '/dotnet$'
+  workshop exec -- dotnet --version | MATCH '^[0-9]+\.[0-9]+\.[0-9]+'
+  workshop exec -- dotnet --list-sdks | MATCH '^[0-9]+\.[0-9]+\.[0-9]+'
+  workshop exec -- dotnet --info | MATCH '.NET SDK'
+
+debug: |
+  workshop exec -- bash -lc 'printf "PATH=%s\n" "${PATH}"' || true
+  workshop exec -- dotnet --info || true
+  workshop tasks
