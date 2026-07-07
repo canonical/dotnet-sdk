@@ -10,8 +10,12 @@ restore: |
 execute: |
   workshop exec -- test -d /home/workshop/.nuget
   workshop exec -- test -d /home/workshop/.dotnet
-  workshop exec -- bash -lc 'echo sdk-nuget-cache > /home/workshop/.nuget/sdk-test-marker'
-  workshop exec -- bash -lc 'echo sdk-dotnet-cache > /home/workshop/.dotnet/sdk-test-marker'
+  workshop exec -- tee /home/workshop/.nuget/sdk-test-marker >/dev/null <<'EOF'
+  sdk-nuget-cache
+  EOF
+  workshop exec -- tee /home/workshop/.dotnet/sdk-test-marker >/dev/null <<'EOF'
+  sdk-dotnet-cache
+  EOF
   workshop exec -- grep -F sdk-nuget-cache /home/workshop/.nuget/sdk-test-marker
   workshop exec -- grep -F sdk-dotnet-cache /home/workshop/.dotnet/sdk-test-marker
 
