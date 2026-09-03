@@ -7,6 +7,7 @@ description: |
   .NET projects. NuGet packages and .NET runtime data are persisted on
   the host to speed up builds across workshop updates.
 license: Apache-2.0
+website: https://github.com/canonical/dotnet-sdk
 platforms:
   amd64:
   arm64:
